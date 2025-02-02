@@ -5,8 +5,16 @@ Respository created for studies
 - npm run dev
 - yarn dev
 
-# Path structure
-- Config = extern library configuration. (Authentication, upload, email...)
-- Modules = Rules and application itself. (Customers, Products, Orders and Users)
-- Shared = Shared modules. (server.ts, routes, db conection...)
-- Services = Inside each module, with rules for that module
+# Path structure (Clean Architecture)
+- Domain = business rule (Entities, Value Objects, Enums, Domain events, Repositories);
+- Application = Use case and domain organization (Use cases, Application Services, Commands, Queries, External interfaces);
+- Presentation = Entry point (Endpoints, Services, gRPC, Graphql, Middleware, Exceptions);
+- Infrastructure = External uses (Databases, Identity providers, Repository IMPL, manage brokers, emails, cloud storage, http clients);
+
+# Dependencies
+- Dotenv = env variables
+- express = microframework 
+- express-async-errors = manipule errors
+- pg = PostgresSQL
+- reflect-metadata = reflection
+- typeorm = ORM

@@ -1,21 +1,34 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import eslintConfigPrettier from 'eslint-config-prettier';
-const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
+import globals from 'globals'
+import pluginJs from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
-/** @type {import('eslint').Linter.Config[]} */
 export default [
-  eslintConfigPrettier,
-  eslintPluginPrettierRecommended,
-  {
-    files: ['**/*.{js,mjs,cjs,ts}'],
-    rules: {
-      'no-console': 'warn',
-      'prettier/prettier': 'error',
-    },
-  },
+  { files: ['**/*.{js,mjs,cjs,ts}'] },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-];
+  {
+    files: ['**/*.js', 'dist', 'build', 'node_modules'],
+    ...tseslint.configs.disableTypeChecked,
+  },
+  eslintPluginPrettierRecommended,
+  {
+    rules: {
+      '@typescript-eslint/interface-name-prefix': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
+      '@typescript-eslint/no-empty-interface': 'off',
+      '@typescript-eslint/no-namespace': 'off',
+      'no-unused-vars': 'off',
+      'no-undef': 'off',
+      'end-of-line': 'auto',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
+    },
+  },
+]
