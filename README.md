@@ -13,8 +13,12 @@ Respository created for studies
 
 # Dependencies
 - Dotenv = env variables
-- express = microframework 
+- Dotenv-cli = load the variables from .env
+- express = microframework
 - express-async-errors = manipule errors
 - pg = PostgresSQL
 - reflect-metadata = reflection
-- typeorm = ORM
+- typeorm = database relation with entities
+- Zod = Schema declaration and validation library
+- swagger UI = API interface
+- swagger-jsdoc = generate API documentation
