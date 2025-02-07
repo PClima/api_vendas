@@ -22,3 +22,4 @@ Respository created for studies
 - Zod = Schema declaration and validation library
 - swagger UI = API interface
 - swagger-jsdoc = generate API documentation
+- Jest = Unit tests
