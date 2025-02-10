@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto'
-import { inMemoryRepository } from './in-memory.repository'
+import { InMemoryRepository } from './in-memory.repository'
 import { NotFoundError } from '../errors/not-found-error'
 
 // Define the model properties
@@ -11,8 +11,8 @@ type StubModelProps = {
   updated_at: Date
 }
 
-// Create a stub class that extends the inMemoryRepository
-class StubInMemoryRepository extends inMemoryRepository<StubModelProps> {
+// Create a stub class that extends the InMemoryRepository
+class StubInMemoryRepository extends InMemoryRepository<StubModelProps> {
   constructor() {
     super()
     this.sortableFilters = ['name']
