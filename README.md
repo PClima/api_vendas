@@ -2,8 +2,9 @@
 Respository created for studies
 
 # Run application
-- npm run dev
-- yarn dev
+- `npm run dev`
+- `yarn dev`
+- `docker compose up -d` (to run the docker container)
 
 # Path structure (Clean Architecture)
 - Domain = business rule (Entities, Value Objects, Enums, Domain events, Repositories);

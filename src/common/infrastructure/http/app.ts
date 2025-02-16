@@ -13,7 +13,7 @@ const options = {
       version: '1.0.0',
     },
   },
-  apis: [],
+  apis: ['./src/**/http/routes/*.ts'], // Paths to the API documentation files
 }
 const swaggerSpec = swaggerJSDoc(options) // Generate the OpenAPI specification with the given options
 
