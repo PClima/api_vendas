@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { createProductController } from '../controllers/create-product.controller'
 import { getProductController } from '../controllers/get-product.controller'
+import { updateProductController } from '../controllers/update-product.controller'
 
 const productsRouter = Router()
 
@@ -123,5 +124,57 @@ productsRouter.post('/', createProductController)
  *         description: Product not found
  */
 productsRouter.get('/:id', getProductController)
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   put:
+ *     summary: Update a product
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The id of the product
+ *         schema:
+ *          type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: The id of the product to be updated
+ *               name:
+ *                 type: string
+ *                 description: The new name of the product to be updated
+ *               price:
+ *                 type: number
+ *                 description: The new price of the product to be updated
+ *               quantity:
+ *                 type: number
+ *                 description: The new quantity of the product to be updated
+ *             example:
+ *               name: New Sample Product
+ *               price: 39.99
+ *               quantity: 200
+ *     responses:
+ *       201:
+ *         description: The product was successfully updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Input data not provided or invalid
+ *       404:
+ *         description: Product not found
+ */
+productsRouter.put('/:id', updateProductController)
 
 export { productsRouter }
