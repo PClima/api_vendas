@@ -1,78 +1,65 @@
 import 'reflect-metadata'
-import { ProductsRepository } from '@/products/domain/repositories/products.repository'
 import { ProductsInMemoryRepository } from '@/products/infrastructure/in-memory/repositories/products-in-memory.repository'
 import { UpdateProductUseCase } from './update-product.usecase'
 import { NotFoundError } from '@/common/domain/errors/not-found-error'
+import { ProductsDataBuilder } from '@/products/infrastructure/testing/helpers/products-data-builder'
+import { ConflictError } from '@/common/domain/errors/conflict-error'
 
-describe('UpdateProductUsecase Unit Tests', () => {
+describe('UpdateProductUseCase Unit Tests', () => {
   let sut: UpdateProductUseCase.UseCase
-  let repository: ProductsRepository
+  let repository: ProductsInMemoryRepository
 
   beforeEach(() => {
     repository = new ProductsInMemoryRepository()
     sut = new UpdateProductUseCase.UseCase(repository)
   })
 
-  it('Should update a product with all params', async () => {
-    //Ensure that the product will be created
-    const spyUpdate = jest.spyOn(repository, 'update')
+  test('should throws error when product not found', async () => {
+    await expect(sut.execute({ id: 'fake-id' })).rejects.toBeInstanceOf(
+      NotFoundError,
+    )
+  })
 
+  it('should not be possible to register a product with the name of another product', async () => {
+    const product1 = repository.create(
+      ProductsDataBuilder({ name: 'Product 1' }),
+    )
+    await repository.insert(product1)
+    const props = {
+      name: 'Product 2',
+      price: 10,
+      quantity: 5,
+    }
+    const model = repository.create(props)
+    await repository.insert(model)
+    const newData = {
+      id: model.id,
+      name: 'Product 1',
+      price: 500,
+      quantity: 20,
+    }
+    await expect(sut.execute(newData)).rejects.toBeInstanceOf(ConflictError)
+  })
+  it('should be able to update a product', async () => {
+    const spyUpdate = jest.spyOn(repository, 'update')
     const props = {
       name: 'Product 1',
       price: 10,
-      quantity: 10,
+      quantity: 5,
     }
+    const model = repository.create(props)
+    await repository.insert(model)
 
-    const result = await repository.create(props)
-    await repository.insert(result)
-
-    const updateProps = {
-      id: result.id,
-      name: 'Product 1',
-      price: 20,
-      quantity: 15,
+    const newData = {
+      id: model.id,
+      name: 'new name',
+      price: 500,
+      quantity: 20,
     }
-
-    const updateResult = await sut.execute(updateProps)
-
-    expect(updateResult).toMatchObject(result)
+    const result = await sut.execute(newData)
+    expect(result.name).toEqual(newData.name)
+    expect(result.price).toEqual(newData.price)
+    expect(result.quantity).toEqual(newData.quantity)
     expect(spyUpdate).toHaveBeenCalledTimes(1)
-  })
-
-  it('Should update a product with only one param', async () => {
-    //Ensure that the product will be created
-    const spyUpdate = jest.spyOn(repository, 'update')
-
-    const props = {
-      name: 'Product 1',
-      price: 10,
-      quantity: 10,
-    }
-
-    const result = await repository.create(props)
-    await repository.insert(result)
-
-    const updateProps = {
-      id: result.id,
-      name: 'Product Test',
-    }
-
-    const updateResult = await sut.execute(updateProps)
-
-    expect(updateResult).toMatchObject(result)
-    expect(spyUpdate).toHaveBeenCalledTimes(1)
-  })
-
-  it('Should not found a product to update', async () => {
-    const updateProps = {
-      id: 'fake-id',
-      name: 'Product Test',
-      price: 10,
-      quantity: 10,
-    }
-
-    const updateResult = await expect(
-      sut.execute(updateProps),
-    ).rejects.toBeInstanceOf(NotFoundError)
   })
 })
