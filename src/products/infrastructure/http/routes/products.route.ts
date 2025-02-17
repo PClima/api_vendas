@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { createProductController } from '../controllers/create-product.controller'
+import { getProductController } from '../controllers/get-product.controller'
 
 const productsRouter = Router()
 
@@ -50,6 +51,7 @@ const productsRouter = Router()
  *   name: Products
  *   description: The products managing API
  */
+
 //Definition of swagger documentation for the product creation endpoint
 /**
  * @swagger
@@ -94,5 +96,32 @@ const productsRouter = Router()
  *         description: Name already used on another product
  */
 productsRouter.post('/', createProductController)
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Get a product by id
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The id of the product
+ *         schema:
+ *          type: string
+ *     responses:
+ *       200:
+ *         description: The product was successfully get
+ *         content:
+ *          application/json:
+ *           schema:
+ *            $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Input data not provided or invalid
+ *       404:
+ *         description: Product not found
+ */
+productsRouter.get('/:id', getProductController)
 
 export { productsRouter }
