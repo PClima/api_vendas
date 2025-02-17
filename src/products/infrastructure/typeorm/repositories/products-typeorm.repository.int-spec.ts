@@ -9,11 +9,13 @@ import { ProductModel } from '@/products/domain/models/products.model'
 
 describe('ProductsTypeormRepository integration Tests', () => {
   let ormRepository: ProductsTypeormRepository
+  let typeormEntityManager: any
 
   //Once running configurations before all tests
   beforeAll(async () => {
     //Initialize the test data source to use the database
     await testDataSource.initialize()
+    typeormEntityManager = testDataSource.createEntityManager()
   })
 
   //Before each test we need to create a new instance of the repository
@@ -22,8 +24,9 @@ describe('ProductsTypeormRepository integration Tests', () => {
     await testDataSource.manager.query('DELETE FROM products')
 
     //Instantiate the repository with the Products repository
-    ormRepository = new ProductsTypeormRepository()
-    ormRepository.productsRepository = testDataSource.getRepository('products')
+    ormRepository = new ProductsTypeormRepository(
+      typeormEntityManager.getRepository(Product),
+    )
   })
 
   //Once running configurations after all tests
@@ -108,7 +111,7 @@ describe('ProductsTypeormRepository integration Tests', () => {
 
       await ormRepository.delete(data.id)
 
-      const result = await ormRepository.productsRepository.findOneBy({
+      const result = await testDataSource.manager.findOneBy(Product, {
         id: data.id,
       })
       expect(result).toBeNull()

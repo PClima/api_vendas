@@ -5,6 +5,7 @@ import { ProductsTypeormRepository } from '../../typeorm/repositories/products-t
 import { dataSource } from '@/common/infrastructure/typeorm'
 import { Product } from '../../typeorm/entities/products.entitiy'
 import { CreateProductUseCase } from '@/products/application/usecases/create-product.usecase'
+import { container } from 'tsyringe'
 
 export async function createProductController(
   request: Request,
@@ -34,12 +35,10 @@ export async function createProductController(
   //If the request body is valid, get the data from the validated request
   const { name, price, quantity } = validatedData.data
 
-  //Creating the isntance of the repository
-  const repository = new ProductsTypeormRepository()
-  //Adding the repository to the data source
-  repository.productsRepository = dataSource.getRepository(Product)
   //Instance the use case
-  const createProductUseCase = new CreateProductUseCase.UseCase(repository)
+  const createProductUseCase: CreateProductUseCase.UseCase = container.resolve(
+    'CreateProductUseCase',
+  )
 
   //Executing the use case
   const product = await createProductUseCase.execute({ name, price, quantity })

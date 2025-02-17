@@ -1,5 +1,6 @@
 import { BadRequestError } from '@/common/domain/errors/bad-request-error'
 import { ProductsRepository } from '@/products/domain/repositories/products.repository'
+import { inject, injectable } from 'tsyringe'
 
 //Creating namescape for the use case better use
 export namespace CreateProductUseCase {
@@ -19,10 +20,13 @@ export namespace CreateProductUseCase {
     created_at: Date
     updated_at: Date
   }
-
+  @injectable()
   export class UseCase {
     //Dependency injection
-    constructor(private productsRepository: ProductsRepository) {}
+    constructor(
+      @inject('ProductRepository')
+      private productsRepository: ProductsRepository,
+    ) {}
 
     async execute(input: Input): Promise<Output> {
       //Validating input data before creating the product

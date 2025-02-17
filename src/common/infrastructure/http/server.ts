@@ -1,6 +1,7 @@
 import { env } from '../env'
 import { dataSource } from '../typeorm'
 import { app } from './app'
+import '@/common/infrastructure/container'
 
 //Initialize the db connection and start the server, if the connection is successful, otherwise log the error
 dataSource

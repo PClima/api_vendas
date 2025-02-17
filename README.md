@@ -24,3 +24,4 @@ Respository created for studies
 - swagger UI = API interface
 - swagger-jsdoc = generate API documentation
 - Jest = Unit tests
+- Tsyringe = Dependency injection container for Typescript
