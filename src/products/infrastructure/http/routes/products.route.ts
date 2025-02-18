@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { createProductController } from '../controllers/create-product.controller'
 import { getProductController } from '../controllers/get-product.controller'
 import { updateProductController } from '../controllers/update-product.controller'
+import { deleteProductController } from '../controllers/delete-product.controller'
 
 const productsRouter = Router()
 
@@ -176,5 +177,32 @@ productsRouter.get('/:id', getProductController)
  *         description: Product not found
  */
 productsRouter.put('/:id', updateProductController)
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Delete a product
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The id of the product
+ *         schema:
+ *          type: string
+ *     responses:
+ *       201:
+ *         description: The product was successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Input data not provided or invalid
+ *       404:
+ *         description: Product not found
+ */
+productsRouter.delete('/:id', deleteProductController)
 
 export { productsRouter }
