@@ -1,53 +1,73 @@
 import { NotFoundError } from '@/common/domain/errors/not-found-error'
-import { ProductsInMemoryRepository } from './products-in-memory.repository'
-import { ProductsDataBuilder } from '../../testing/helpers/products-data-builder'
+import { UsersInMemoryRepository } from './users-in-memory.repository'
+import { UsersDataBuilder } from '../../testing/helpers/users-data-builder'
 import { ConflictError } from '@/common/domain/errors/conflict-error'
-describe('ProductsInMemoryRepository unit tests', () => {
-  let sut: ProductsInMemoryRepository
+describe('UsersInMemoryRepository unit tests', () => {
+  let sut: UsersInMemoryRepository
   beforeEach(() => {
-    sut = new ProductsInMemoryRepository()
+    sut = new UsersInMemoryRepository()
     sut.items = []
   })
 
+  describe('findByEmail', () => {
+    it('should throw error when user not found by email', async () => {
+      await expect(() =>
+        sut.findByEmail('fake.email@email.com'),
+      ).rejects.toThrow(
+        new NotFoundError('User not found using email fake.email@email.com'),
+      )
+      //Same verification with other way
+      await expect(() =>
+        sut.findByEmail('fake.email@email.com'),
+      ).rejects.toBeInstanceOf(NotFoundError)
+    })
+    it('should find a user by email', async () => {
+      const data = UsersDataBuilder({ email: 'email@email.com' })
+      sut.items.push(data)
+      const result = await sut.findByEmail('email@email.com')
+      expect(result).toStrictEqual(data)
+    })
+  })
+
   describe('findByName', () => {
-    it('should throw error when product not found', async () => {
+    it('should throw error when user not found by name', async () => {
       await expect(() => sut.findByName('fake_name')).rejects.toThrow(
-        new NotFoundError('Product not found using name fake_name'),
+        new NotFoundError('User not found using name fake_name'),
       )
       //Same verification with other way
       await expect(() => sut.findByName('fake_name')).rejects.toBeInstanceOf(
         NotFoundError,
       )
     })
-    it('should find a product by name', async () => {
-      const data = ProductsDataBuilder({ name: 'Curso nodejs' })
+    it('should find a user by name', async () => {
+      const data = UsersDataBuilder({ name: 'Curso nodejs' })
       sut.items.push(data)
       const result = await sut.findByName('Curso nodejs')
       expect(result).toStrictEqual(data)
     })
   })
 
-  describe('conflictingName', () => {
-    it('should throw error when product found', async () => {
-      const data = ProductsDataBuilder({ name: 'Curso nodejs' })
+  describe('conflictingEmail', () => {
+    it('should throw error when user found by email', async () => {
+      const data = UsersDataBuilder({ email: 'email@email.com' })
       sut.items.push(data)
-      await expect(() => sut.conflictingName('Curso nodejs')).rejects.toThrow(
-        new ConflictError('Name already used on another product'),
-      )
       await expect(() =>
-        sut.conflictingName('Curso nodejs'),
+        sut.conflictingEmail('email@email.com'),
+      ).rejects.toThrow(new ConflictError('Email already used by other user'))
+      await expect(() =>
+        sut.conflictingEmail('email@email.com'),
       ).rejects.toBeInstanceOf(ConflictError)
     })
-    it('should not find a product by name', async () => {
+    it('should not find a user by email', async () => {
       expect.assertions(0)
-      await sut.conflictingName('Curso nodejs')
+      await sut.conflictingEmail('email@email.com')
     })
   })
 
   describe('applyFilter', () => {
     //Testing the applyFilter method error case and check if the filter is not being called
-    it('should no filter items when filter parameter is null', async () => {
-      const data = ProductsDataBuilder({})
+    it('should no filter users when filter parameter is null', async () => {
+      const data = UsersDataBuilder({})
       sut.items.push(data)
       const spyFilterMethod = jest.spyOn(sut.items, 'filter' as any)
       const result = await sut['applyFilter'](sut.items, null)
@@ -56,11 +76,11 @@ describe('ProductsInMemoryRepository unit tests', () => {
     })
 
     //Testing the applyFilter method success cases and check if the filter is being called correctly
-    it('should filter items with filter param', async () => {
+    it('should filter users with filter param', async () => {
       const items = [
-        ProductsDataBuilder({ name: 'TEST' }),
-        ProductsDataBuilder({ name: 'Test' }),
-        ProductsDataBuilder({ name: 'fake' }),
+        UsersDataBuilder({ name: 'TEST' }),
+        UsersDataBuilder({ name: 'Test' }),
+        UsersDataBuilder({ name: 'fake' }),
       ]
       sut.items.push(...items)
 
@@ -85,26 +105,26 @@ describe('ProductsInMemoryRepository unit tests', () => {
 
   describe('applySort', () => {
     //Testing the applySort method error case when sort is null or sortableFilters does not include the sort
-    it('should not sort items', async () => {
+    it('should not sort users', async () => {
       const items = [
-        ProductsDataBuilder({ name: 'test', price: 10 }),
-        ProductsDataBuilder({ name: 'TEST', price: 20 }),
-        ProductsDataBuilder({ name: 'fake', price: 30 }),
+        UsersDataBuilder({ name: 'test', email: 'a@email.com' }),
+        UsersDataBuilder({ name: 'TEST', email: 'b@email.com' }),
+        UsersDataBuilder({ name: 'fake', email: 'c@email.com' }),
       ]
       sut.items.push(...items)
       let result = await sut['applySort'](sut.items, null, null)
       expect(result).toStrictEqual(items)
 
-      result = await sut['applySort'](sut.items, 'price', 'asc')
+      result = await sut['applySort'](sut.items, 'email', 'asc')
       expect(result).toStrictEqual(items)
     })
 
     //Testing the applySort method success case
     it('should sort items', async () => {
       const items = [
-        ProductsDataBuilder({ name: 'b', price: 10 }),
-        ProductsDataBuilder({ name: 'a', price: 20 }),
-        ProductsDataBuilder({ name: 'c', price: 30 }),
+        UsersDataBuilder({ name: 'b', email: 'b@email.com' }),
+        UsersDataBuilder({ name: 'a', email: 'a@email.com' }),
+        UsersDataBuilder({ name: 'c', email: 'c@email.com' }),
       ]
       sut.items.push(...items)
       let result = await sut['applySort'](sut.items, 'name', 'desc')
