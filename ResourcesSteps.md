@@ -36,3 +36,15 @@ npm run typeorm:migration:run
 * In `Infrastructure\in-memory\repositories`, create the unit tests files to test methods implemented
 
 * **To run unit tests `npm run test:unit -- <test_file_name>.repository`**
+
+## Create Container to implements dependency injection
+In `Infrastructure\container`, create the index file to implements all injectable dependencies
+
+## Create the Typeorm repository
+In `Infrastructure\typeorm\repositories`, create the repository file to implements the typeorm methods
+
+## Create the integration tests
+
+* In `Infrastructure\typeorm\repositories`, create the integration tests files to test methods implemented
+
+* **To run unit tests `npm run test:int -- <test_file_name>.repository`**
