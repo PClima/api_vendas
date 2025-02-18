@@ -6,6 +6,7 @@ import { Product } from '@/products/infrastructure/typeorm/entities/products.ent
 import { GetProductUseCase } from '@/products/application/usecases/get-product.usecase'
 import { UpdateProductUseCase } from '@/products/application/usecases/update-product.usecase'
 import { DeleteProductUseCase } from '@/products/application/usecases/delete-product.usecase'
+import { SearchProductUseCase } from '@/products/application/usecases/search-product.usecase'
 
 container.registerSingleton('ProductRepository', ProductsTypeormRepository)
 container.registerInstance(
@@ -24,4 +25,8 @@ container.registerSingleton(
 container.registerSingleton(
   'DeleteProductUseCase',
   DeleteProductUseCase.UseCase,
+)
+container.registerSingleton(
+  'SearchProductUseCase',
+  SearchProductUseCase.UseCase,
 )

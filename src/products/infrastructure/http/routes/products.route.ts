@@ -3,6 +3,7 @@ import { createProductController } from '../controllers/create-product.controlle
 import { getProductController } from '../controllers/get-product.controller'
 import { updateProductController } from '../controllers/update-product.controller'
 import { deleteProductController } from '../controllers/delete-product.controller'
+import { searchProductController } from '../controllers/search-product.controller'
 
 const productsRouter = Router()
 
@@ -45,6 +46,37 @@ const productsRouter = Router()
  *         quantity: 100
  *         created_at: 2023-01-01T10:00:00Z
  *         updated_at: 2023-01-01T10:00:00Z
+ *     ProductListResponse:
+ *       type: object
+ *       properties:
+ *         items:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Product'
+ *         per_page:
+ *           type: integer
+ *           description: The quantity of products per page
+ *         total:
+ *           type: integer
+ *           description: The total number of products
+ *         current_page:
+ *           type: integer
+ *           description: The current page number
+ *         last_page:
+ *           type: integer
+ *           description: The last page number
+ *       example:
+ *         items:
+ *           - id: 06db518e-613b-4a76-8e4f-2e305fe4f68d
+ *             name: Sample Product
+ *             price: 29.99
+ *             quantity: 100
+ *             created_at: 2023-01-01T10:00:00Z
+ *             updated_at: 2023-01-01T10:00:00Z
+ *         per_page: 10
+ *         total: 1
+ *         current_page: 1
+ *         last_page: 1
  */
 //Setting the header for the swagger documentation
 /**
@@ -204,5 +236,59 @@ productsRouter.put('/:id', updateProductController)
  *         description: Product not found
  */
 productsRouter.delete('/:id', deleteProductController)
+
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Search for products
+ *     tags: [Products]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         description: The required page number
+ *         schema:
+ *          type: number
+ *          default: 1
+ *       - in: query
+ *         name: per_page
+ *         required: false
+ *         description: Quantity of products per page
+ *         schema:
+ *          type: number
+ *          default: 15
+ *       - in: query
+ *         name: sort
+ *         required: false
+ *         description: The field to sort the products
+ *         schema:
+ *          type: string
+ *          default: null
+ *       - in: query
+ *         name: sort_dir
+ *         required: false
+ *         description: The direction to sort the products
+ *         schema:
+ *          type: string
+ *          default: null
+ *       - in: query
+ *         name: filter
+ *         required: false
+ *         description: The filter to search the products
+ *         schema:
+ *          type: string
+ *          default: null
+ *     responses:
+ *       200:
+ *         description: The products were successfully found
+ *         content:
+ *          application/json:
+ *           schema:
+ *            type: array
+ *            items:
+ *              $ref: '#/components/schemas/Product'
+ */
+productsRouter.get('/', searchProductController)
 
 export { productsRouter }
