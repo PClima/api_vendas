@@ -48,3 +48,6 @@ In `Infrastructure\typeorm\repositories`, create the repository file to implemen
 * In `Infrastructure\typeorm\repositories`, create the integration tests files to test methods implemented
 
 * **To run unit tests `npm run test:int -- <test_file_name>.repository`**
+
+## Create Use cases
+* In `Application\usecases`, create the usecase file
