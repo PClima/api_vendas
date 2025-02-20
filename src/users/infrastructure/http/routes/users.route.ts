@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import { CreateUserUseCase } from '@/users/application/usecases/create-user.usecase'
-import { createUserController } from '../controllers/create-product.controller'
-import { searchUserController } from '../controllers/search-product.controller'
+import { createUserController } from '../controllers/create-user.controller'
+import { searchUserController } from '../controllers/search-user.controller'
+import { authenticateUserController } from '../controllers/authenticate-user.controller'
 
 const usersRouter = Router()
 
@@ -155,5 +155,42 @@ usersRouter.post('/', createUserController)
  *              $ref: '#/components/schemas/User'
  */
 usersRouter.get('/', searchUserController)
+
+/**
+ * @swagger
+ * /users/authenticate:
+ *   get:
+ *     summary: Authenticate a user with email and password
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The user email
+ *               password:
+ *                 type: string
+ *                 description: The user password
+ *             example:
+ *                 email: user@mail.com
+ *                 password: password123
+ *     responses:
+ *       201:
+ *         description: The user was successfully authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Input data not provided or invalid
+ */
+usersRouter.get('/authenticate', authenticateUserController)
 
 export { usersRouter }

@@ -4,6 +4,7 @@ import { dataSource } from '@/common/infrastructure/typeorm'
 import { User } from '../typeorm/entities/users.entity'
 import { CreateUserUseCase } from '@/users/application/usecases/create-user.usecase'
 import { SearchUserUseCase } from '@/users/application/usecases/search-product.usecase'
+import { AuthenticateUserUseCase } from '@/users/application/usecases/authenticate-user.usecase'
 
 container.registerSingleton('UsersRepository', UsersTypeormRepository)
 container.registerInstance(
@@ -13,3 +14,7 @@ container.registerInstance(
 
 container.registerSingleton('CreateUserUseCase', CreateUserUseCase.UseCase)
 container.registerSingleton('SearchUserUseCase', SearchUserUseCase.UseCase)
+container.registerSingleton(
+  'AuthenticateUserUseCase',
+  AuthenticateUserUseCase.UseCase,
+)
