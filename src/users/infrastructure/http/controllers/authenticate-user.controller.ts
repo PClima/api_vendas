@@ -28,5 +28,5 @@ export async function authenticateUserController(
   const user = await authenticateUserUseCase.execute({ email, password })
 
   //Returing the created user
-  return response.status(201).json(user)
+  return response.status(200).json(user)
 }
