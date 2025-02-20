@@ -81,7 +81,7 @@ export class UsersTypeormRepository implements UsersRepository {
     const orderByDir = validSortDir ? props.sort_dir : 'desc'
 
     const [users, total] = await this.usersRepository.findAndCount({
-      ...(props.filter && { where: { name: ILike(props.filter) } }),
+      ...(props.filter && { where: { name: ILike(`%${props.filter}%`) } }),
       order: { [orderByField]: orderByDir },
       take: props.per_page,
       skip: (props.page - 1) * props.per_page,

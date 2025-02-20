@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { CreateUserUseCase } from '@/users/application/usecases/create-user.usecase'
 import { createUserController } from '../controllers/create-product.controller'
+import { searchUserController } from '../controllers/search-product.controller'
 
 const usersRouter = Router()
 
@@ -62,7 +63,7 @@ const usersRouter = Router()
  * /users:
  *   post:
  *     summary: Create a new user
- *     tags: [Users]
+ *     tags: [User]
  *     requestBody:
  *       required: true
  *       content:
@@ -100,5 +101,59 @@ const usersRouter = Router()
  *         description: Email already used by another user
  */
 usersRouter.post('/', createUserController)
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Search for users
+ *     tags: [User]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         description: The required page number
+ *         schema:
+ *          type: number
+ *          default: 1
+ *       - in: query
+ *         name: per_page
+ *         required: false
+ *         description: Quantity of users per page
+ *         schema:
+ *          type: number
+ *          default: 15
+ *       - in: query
+ *         name: sort
+ *         required: false
+ *         description: The field to sort the users
+ *         schema:
+ *          type: string
+ *          default: null
+ *       - in: query
+ *         name: sort_dir
+ *         required: false
+ *         description: The direction to sort the users
+ *         schema:
+ *          type: string
+ *          default: null
+ *       - in: query
+ *         name: filter
+ *         required: false
+ *         description: The filter to search the users
+ *         schema:
+ *          type: string
+ *          default: null
+ *     responses:
+ *       200:
+ *         description: The products were successfully found
+ *         content:
+ *          application/json:
+ *           schema:
+ *            type: array
+ *            items:
+ *              $ref: '#/components/schemas/User'
+ */
+usersRouter.get('/', searchUserController)
 
 export { usersRouter }

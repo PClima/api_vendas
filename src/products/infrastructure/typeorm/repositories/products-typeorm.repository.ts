@@ -85,7 +85,7 @@ export class ProductsTypeormRepository implements ProductsRepository {
     const orderByDir = validSortDir ? props.sort_dir : 'desc'
 
     const [products, total] = await this.productsRepository.findAndCount({
-      ...(props.filter && { where: { name: ILike(props.filter) } }),
+      ...(props.filter && { where: { name: ILike(`%${props.filter}%`) } }),
       order: { [orderByField]: orderByDir },
       take: props.per_page,
       skip: (props.page - 1) * props.per_page,
