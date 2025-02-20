@@ -15,6 +15,8 @@ const envSchema = z.object({
   DB_NAME: z.string().default('postgres'), // Checking if DB_NAME env variable is a string, default is 'postgres'
   DB_USER: z.string().default('postgres'), // Checking if DB_USER env variable is a string, default is 'postgres'
   DB_PASS: z.string().default('postgres'), // Checking if DB_PASSWORD env variable is a string, default is 'postgres'
+  JWT_SECRET: z.string().default('secret'), // Checking if JWT_SECRET env variable is a string, default is 'secret'
+  JWT_EXPIRES_IN: z.coerce.number().default(86400), // Checking if JWT_EXPIRES_IN env variable is a nu,ber, default is 1 day in seconds
 })
 
 const _env = envSchema.safeParse(process.env)

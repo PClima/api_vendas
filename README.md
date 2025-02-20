@@ -26,3 +26,4 @@ Respository created for studies
 - Jest = Unit tests
 - Tsyringe = Dependency injection container for Typescript
 - Bcrypt.js = Used to encypt passwords
+- JWT(jsonwebtoken) = Token validation

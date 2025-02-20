@@ -4,8 +4,12 @@ import { getProductController } from '../controllers/get-product.controller'
 import { updateProductController } from '../controllers/update-product.controller'
 import { deleteProductController } from '../controllers/delete-product.controller'
 import { searchProductController } from '../controllers/search-product.controller'
+import { isAuthenticated } from '@/common/infrastructure/http/middlewares/isAuthenticated'
 
 const productsRouter = Router()
+
+//Routes that require authentication must be after the authentication middleware
+productsRouter.use(isAuthenticated)
 
 //First swagger documentation with the product creation endpoint
 /**

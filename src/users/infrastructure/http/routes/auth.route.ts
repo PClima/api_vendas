@@ -8,87 +8,45 @@ const authRouter = Router()
  * @swagger
  * components:
  *   schemas:
- *     Auth:
+ *     AuthResponse:
  *       type: object
- *       required:
- *         - email
- *         - password
  *       properties:
- *         id:
+ *         access_token:
  *           type: string
- *           description: The auto-generated id (uuid) of the product
- *         name:
- *           type: string
- *           description: The user name
- *         email:
- *           type: string
- *           description: The user email
- *         password:
- *           type: string
- *           description: The user password
- *         avatar:
- *           type: string
- *           description: The user avatar link
- *         created_at:
- *           type: string
- *           format: date-time
- *           description: The date the user was added
- *         updated_at:
- *           type: string
- *           format: date-time
- *           description: The date the user was last updated
+ *           description: Access Token (JWT)
  *       example:
- *         id: 06db518e-613b-4a76-8e4f-2e305fe4f68d
- *         name: Sample user
- *         email: user@mail.com
- *         password: password123
- *         avatar: https://avatar.com/avatar.png
- *         created_at: 2023-01-01T10:00:00Z
- *         updated_at: 2023-01-01T10:00:00Z
+ *         access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlVzZXIiLCJlbWFpbCI6InVzZXJAbWFpbC5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.1b9d1b8
  */
 //Setting the header for the swagger documentation
 /**
  * @swagger
  * tags:
- *   name: Auth
+ *   name: Authentication
  *   description: The authentication managing API
  */
 
 /**
  * @swagger
  * /auth/login:
- *   get:
+ *   post:
  *     summary: Authenticate a user with email and password
- *     tags: [User]
+ *     tags: [Authentication]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *                 description: The user email
- *               password:
- *                 type: string
- *                 description: The user password
- *             example:
- *                 email: user@mail.com
- *                 password: password123
+ *             $ref: '#/components/schemas/AuthResponse'
  *     responses:
  *       200:
  *         description: The user was successfully authenticated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/AuthResponse'
  *       400:
  *         description: Input data not provided or invalid
  */
-authRouter.get('/login', authenticateUserController)
+authRouter.post('/login', authenticateUserController)
 
 export { authRouter }

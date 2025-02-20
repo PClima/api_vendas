@@ -1,3 +1,4 @@
+import { AuthProvider } from './../../../../common/domain/providers/auth-provider'
 import { Request, Response } from 'express'
 import { z } from 'zod'
 import { AuthenticateUserUseCase } from '@/users/application/usecases/authenticate-user.usecase'
@@ -27,6 +28,10 @@ export async function authenticateUserController(
   //Executing the use case
   const user = await authenticateUserUseCase.execute({ email, password })
 
+  const authProvider: AuthProvider = container.resolve('AuthProvider')
+
+  const { access_token } = authProvider.generateAuthKey(user.id)
+
   //Returing the created user
-  return response.status(200).json(user)
+  return response.status(200).json({ access_token })
 }
