@@ -27,3 +27,5 @@ Respository created for studies
 - Tsyringe = Dependency injection container for Typescript
 - Bcrypt.js = Used to encypt passwords
 - JWT(jsonwebtoken) = Token validation
+- Multer = node.js middleware for handling multipart/form-data (Upload files)
+- aws-sdk = AWS services (Used in S3 bucket on this project)

@@ -17,6 +17,10 @@ const envSchema = z.object({
   DB_PASS: z.string().default('postgres'), // Checking if DB_PASSWORD env variable is a string, default is 'postgres'
   JWT_SECRET: z.string().default('secret'), // Checking if JWT_SECRET env variable is a string, default is 'secret'
   JWT_EXPIRES_IN: z.coerce.number().default(86400), // Checking if JWT_EXPIRES_IN env variable is a nu,ber, default is 1 day in seconds
+  BUCKET_NAME: z.string(), // Checking if BUCKET_NAME env variable is a string
+  AWS_REGION: z.string(), // Checking if AWS_REGION env variable is a string
+  AWS_ACCESS_KEY_ID: z.string(), // Checking if AWS_ACCESS_KEY_ID env variable is a string
+  AWS_SECRET_ACCESS_KEY: z.string(), // Checking if AWS_SECRET_ACCESS_KEY env variable is a string
 })
 
 const _env = envSchema.safeParse(process.env)
