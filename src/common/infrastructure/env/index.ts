@@ -21,6 +21,7 @@ const envSchema = z.object({
   AWS_REGION: z.string(), // Checking if AWS_REGION env variable is a string
   AWS_ACCESS_KEY_ID: z.string(), // Checking if AWS_ACCESS_KEY_ID env variable is a string
   AWS_SECRET_ACCESS_KEY: z.string(), // Checking if AWS_SECRET_ACCESS_KEY env variable is a string
+  BUCKET_LINK: z.string(), // Checking if BUCKET_LINK env variable is a string
 })
 
 const _env = envSchema.safeParse(process.env)

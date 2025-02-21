@@ -29,3 +29,4 @@ Respository created for studies
 - JWT(jsonwebtoken) = Token validation
 - Multer = node.js middleware for handling multipart/form-data (Upload files)
 - aws-sdk = AWS services (Used in S3 bucket on this project)
+- class-transformer = Plain Objects

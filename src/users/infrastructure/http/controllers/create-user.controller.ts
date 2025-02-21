@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { CreateUserUseCase } from '@/users/application/usecases/create-user.usecase'
 import { container } from 'tsyringe'
 import { dataValidation } from '@/common/infrastructure/validation/zod'
+import { instanceToInstance } from 'class-transformer'
 
 export async function createUserController(
   request: Request,
@@ -29,5 +30,5 @@ export async function createUserController(
   const user = await createUserUseCase.execute({ name, email, password })
 
   //Returing the created user
-  return response.status(201).json(user)
+  return response.status(201).json(instanceToInstance(user))
 }

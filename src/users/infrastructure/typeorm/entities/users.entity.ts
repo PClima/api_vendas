@@ -1,4 +1,6 @@
+import { env } from '@/common/infrastructure/env'
 import { UserModel } from '@/users/domain/models/users.model'
+import { Exclude, Expose } from 'class-transformer'
 import {
   Column,
   CreateDateColumn,
@@ -20,6 +22,7 @@ export class User implements UserModel {
   email: string
 
   @Column()
+  @Exclude() //Decoration to exclude the password field from the response
   password: string
 
   @Column()
@@ -30,4 +33,11 @@ export class User implements UserModel {
 
   @UpdateDateColumn()
   updated_at: Date
+
+  @Expose({ name: 'avatar_url' }) //Decoration to change the name of the field in the response
+  getAvatarUrl() {
+    if (!this.avatar) return null
+
+    return `${env.BUCKET_LINK}${this.avatar}` //Return the url of the avatar
+  }
 }

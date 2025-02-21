@@ -1,3 +1,4 @@
+import { instanceToInstance } from 'class-transformer'
 import { dataValidation } from '@/common/infrastructure/validation/zod'
 import { UpdateAvatarUseCase } from '@/users/application/usecases/update-avatar.usecase'
 import { Request, Response } from 'express'
@@ -28,7 +29,7 @@ export async function updateAvatarController(
     'UpdateAvatarUseCase',
   )
 
-  const user_avatar = await updateAvatarUseCase.execute({
+  const user = await updateAvatarUseCase.execute({
     user_id,
     filename: originalname.split(' ').join('-'),
     filesize: size,
@@ -36,5 +37,5 @@ export async function updateAvatarController(
     body: buffer,
   })
 
-  return response.status(200).json(user_avatar)
+  return response.status(200).json(instanceToInstance(user))
 }
