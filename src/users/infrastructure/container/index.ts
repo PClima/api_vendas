@@ -7,11 +7,18 @@ import { SearchUserUseCase } from '@/users/application/usecases/search-product.u
 import { AuthenticateUserUseCase } from '@/users/application/usecases/authenticate-user.usecase'
 import { UpdateAvatarUseCase } from '@/users/application/usecases/update-avatar.usecase'
 import { GetAvatarUseCase } from '@/users/application/usecases/get-avatar.usecase'
+import { UserTokensTypeormRepository } from '../typeorm/repositories/user-tokens-typeorm.repository'
+import { UserTokens } from '../typeorm/entities/user-tokens.entity'
 
 container.registerSingleton('UsersRepository', UsersTypeormRepository)
 container.registerInstance(
   'UsersDefaultTypeormRepository',
   dataSource.getRepository(User),
+)
+container.registerSingleton('UserTokensRepository', UserTokensTypeormRepository)
+container.registerInstance(
+  'UserTokensDefaultTypeormRepository',
+  dataSource.getRepository(UserTokens),
 )
 
 container.registerSingleton('CreateUserUseCase', CreateUserUseCase.UseCase)

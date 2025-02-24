@@ -101,7 +101,7 @@ export class UsersTypeormRepository implements UsersRepository {
   protected async _get(id: string): Promise<UserModel> {
     const user = await this.usersRepository.findOneBy({ id })
     if (!user) {
-      throw new NotFoundError(`User not found unsing id ${id}`)
+      throw new NotFoundError(`User not found using ID ${id}`)
     }
     return user
   }
