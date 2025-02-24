@@ -6,6 +6,7 @@ import { CreateUserUseCase } from '@/users/application/usecases/create-user.usec
 import { SearchUserUseCase } from '@/users/application/usecases/search-product.usecase'
 import { AuthenticateUserUseCase } from '@/users/application/usecases/authenticate-user.usecase'
 import { UpdateAvatarUseCase } from '@/users/application/usecases/update-avatar.usecase'
+import { GetAvatarUseCase } from '@/users/application/usecases/get-avatar.usecase'
 
 container.registerSingleton('UsersRepository', UsersTypeormRepository)
 container.registerInstance(
@@ -20,3 +21,4 @@ container.registerSingleton(
   AuthenticateUserUseCase.UseCase,
 )
 container.registerSingleton('UpdateAvatarUseCase', UpdateAvatarUseCase.UseCase)
+container.registerSingleton('GetAvatarUseCase', GetAvatarUseCase.UseCase)

@@ -4,6 +4,7 @@ import { searchUserController } from '../controllers/search-user.controller'
 import { isAuthenticated } from '@/common/infrastructure/http/middlewares/isAuthenticated'
 import { upload } from '../middlewares/UploadAvatar'
 import { updateAvatarController } from '../controllers/update-avatar.controller'
+import { getAvatarController } from '../controllers/get-avatar.controller'
 
 const usersRouter = Router()
 
@@ -195,5 +196,7 @@ usersRouter.patch(
   upload.single('file'),
   updateAvatarController,
 )
+
+//usersRouter.get('/avatar', isAuthenticated, getAvatarController)
 
 export { usersRouter }

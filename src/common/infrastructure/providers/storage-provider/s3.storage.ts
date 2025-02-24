@@ -2,8 +2,13 @@ import {
   UploaderProps,
   UploaderProvider,
 } from '@/common/domain/providers/uploader-provider'
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3'
 import { env } from '../../env'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 export class S3Uploader implements UploaderProvider {
   private readonly client: S3Client
@@ -19,15 +24,14 @@ export class S3Uploader implements UploaderProvider {
   }
 
   async upload({ filename, filetype, body }: UploaderProps): Promise<string> {
-    await this.client.send(
-      new PutObjectCommand({
-        Bucket: env.BUCKET_NAME,
-        Key: filename,
-        ContentType: filetype,
-        Body: body,
-      }),
-    )
-
     return filename
+  }
+
+  async generatePresignedURL(filename: string): Promise<string> {
+    const command = new GetObjectCommand({
+      Bucket: env.BUCKET_NAME,
+      Key: filename,
+    })
+    return getSignedUrl(this.client, command, { expiresIn: 1000 })
   }
 }

@@ -6,4 +6,5 @@ export type UploaderProps = {
 
 export interface UploaderProvider {
   upload(params: UploaderProps): Promise<string>
+  generatePresignedURL(filename: string): Promise<string>
 }
