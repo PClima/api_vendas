@@ -1,4 +1,4 @@
-import { AuthProvider } from './../../../domain/providers/auth-provider'
+import { AuthProvider, VerifyAuthKeyProps } from './../../../domain/providers/auth-provider'
 import { UnauthorizedError } from '@/common/domain/errors/unauthorized-error'
 import { NextFunction, Request, Response } from 'express'
 import { container } from 'tsyringe'
@@ -19,9 +19,9 @@ export function isAuthenticated(
   const [, access_token] = authHeader.split(' ')
 
   const AuthProvider: AuthProvider = container.resolve('AuthProvider')
-  const { user_id } = AuthProvider.verifyAuthKey(access_token)
+  const verifyReturn: VerifyAuthKeyProps = AuthProvider.verifyAuthKey(access_token)
 
-  if (!user_id) {
+  if (!verifyReturn.is_valid) {
     throw new UnauthorizedError('Invalid token')
   }
 

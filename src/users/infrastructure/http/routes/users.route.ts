@@ -13,28 +13,32 @@ const usersRouter = Router()
  * @swagger
  * components:
  *   schemas:
- *     User:
+ *     usuarios:
  *       type: object
  *       required:
- *         - name
+ *         - id
+ *         - client_id
  *         - email
- *         - password
+ *         - name
  *       properties:
  *         id:
  *           type: string
- *           description: The auto-generated id (uuid) of the product
+ *           description: Chave primária que corresponde ao atributo sub do Cognito.
+ *         client_id:
+ *           type: string
+ *           description: Identificador do cliente
  *         name:
  *           type: string
- *           description: The user name
+ *           description: Nome do usuário
  *         email:
  *           type: string
- *           description: The user email
- *         password:
- *           type: string
- *           description: The user password
- *         avatar:
- *           type: string
- *           description: The user avatar link
+ *           description: Email do usuário
+ *         is_active:
+ *           type: boolean
+ *           description: Indicador se usuário está ativo
+ *         preferences:
+ *           type: jsonb
+ *           description: Coleção de dados com preferencias do usuário
  *         created_at:
  *           type: string
  *           format: date-time
@@ -45,10 +49,11 @@ const usersRouter = Router()
  *           description: The date the user was last updated
  *       example:
  *         id: 06db518e-613b-4a76-8e4f-2e305fe4f68d
+ *         client-id: 06db518e-613b-4a76-8e4f-2e305fe4f68d
  *         name: Sample user
  *         email: user@mail.com
- *         password: password123
- *         avatar: https://avatar.com/avatar.png
+ *         is_active: true
+ *         preferences: {"tema": "dark", "idioma": "portugues", "notificacoes": {"push": "false", "email": "false"}}
  *         created_at: 2023-01-01T10:00:00Z
  *         updated_at: 2023-01-01T10:00:00Z
  */
